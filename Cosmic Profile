@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abishek VR — Design Engineer</title>
+  <meta name="description" content="Abishek VR — Design Engineer. CAD, meshing, FEA (learning LS-DYNA). Portfolio." />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#08070b;
+      --bg-2:#0f1222;
+      --accent:#7fffd4; /* aqua */
+      --muted:#9aa3b2;
+      --card:#0f1720;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:14px;
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#e6eef6;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    a{color:var(--accent);text-decoration:none}
+    header{
+      position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);backdrop-filter: blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .nav{max-width:var(--maxw);margin:0 auto;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#2b2b5c,#2f9aa6);display:flex;align-items:center;justify-content:center;font-family:Rajdhani;font-weight:700}
+    .brand h1{margin:0;font-size:18px;letter-spacing:0.6px}
+    .tag{font-size:12px;color:var(--muted);margin-top:3px}
+    nav a{margin-left:18px;font-weight:600;color:rgba(230,238,246,0.88)}
+
+    /* Hero */
+    .hero{min-height:64vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .hero-inner{max-width:var(--maxw);width:100%;padding:80px 20px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
+    .bio{padding:28px;background:linear-gradient(180deg,var(--glass),transparent);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,0.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.03)}
+    .bio h2{margin:0 0 8px 0;font-family:Rajdhani;font-size:30px}
+    .bio p{margin:0;color:var(--muted);line-height:1.6}
+    .cta{margin-top:18px;display:flex;gap:12px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg, rgba(127,255,212,0.06), rgba(127,255,212,0.02));border-color:rgba(127,255,212,0.18);color:var(--accent)}
+
+    /* Card column */
+    .panel{padding:22px;border-radius:14px;background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));min-height:220px;border:1px solid rgba(255,255,255,0.03)}
+    .skill-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .chip{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Projects */
+    main{max-width:var(--maxw);margin:40px auto;padding:20px}
+    h3.section{font-family:Rajdhani;font-size:22px;color:#e9f6f5;margin-bottom:14px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .project{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:transform .28s cubic-bezier(.2,.9,.4,1),box-shadow .28s}
+    .project:hover{transform:translateY(-8px);box-shadow:0 18px 50px rgba(0,0,0,0.6)}
+    .project h4{margin:0 0 8px 0}
+    .project p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal-card{width:90%;max-width:900px;background:linear-gradient(180deg,#081018,#0d1320);padding:24px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+    .modal-top{display:flex;align-items:center;justify-content:space-between}
+    .close{background:none;border:0;color:var(--muted);font-weight:700;cursor:pointer}
+
+    /* Footer */
+    footer{max-width:var(--maxw);margin:40px auto;padding:20px;color:var(--muted);text-align:center}
+
+    /* Starfield canvas */
+    canvas#stars{position:absolute;inset:0;z-index:0}
+    .hero-inner,.bio,.panel{position:relative;z-index:2}
+
+    /* responsive */
+    @media (max-width:880px){.hero-inner{grid-template-columns:1fr;gap:18px}.panel{order:2}.bio{order:1}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">AV</div>
+        <div>
+          <h1>Abishek VR</h1>
+          <div class="tag">Design Engineer — CAD · Meshing · FEA (learning LS‑DYNA)</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <canvas id="stars"></canvas>
+    <div class="hero-inner">
+      <div class="bio">
+        <h2>Hi — I’m Abishek.</h2>
+        <p>I design and model mechanical components in CAD, build meshes for analysis, and am currently learning LS‑DYNA for crash simulations and optimization workflows. I focus on clarity, manufacturability, and solver-ready geometry.</p>
+        <div class="cta">
+          <button class="btn primary" onclick="scrollToSection('projects')">See projects</button>
+          <a class="btn" href="mailto:your.email@example.com">Email me</a>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h4 style="margin:0 0 8px 0">Skills & Tools</h4>
+        <div class="skill-list">
+          <div class="chip">CAD (Creo / SolidWorks)</div>
+          <div class="chip">HyperMesh</div>
+          <div class="chip">ANSYS</div>
+          <div class="chip">LS‑DYNA (learning)</div>
+          <div class="chip">Meshing & Quality</div>
+          <div class="chip">Python / Scripting</div>
+        </div>
+
+        <h4 style="margin-top:18px">Quick Links</h4>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <a class="btn" href="https://github.com/abishek-vr" target="_blank">GitHub</a>
+          <a class="btn" href="#contact">LinkedIn</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <h3 class="section" id="projects">Projects</h3>
+    <div class="grid">
+      <div class="project" data-title="Mesh Automation — Cylinder Bracket" data-body="Used HyperMesh to generate a mid-surface and structured hex-dominant mesh, improved element quality from 0.52 to 0.86. Exported solver deck for static-to-dynamic handoff.">
+        <h4>Mesh Automation — Cylinder Bracket</h4>
+        <p>HyperMesh workflow for mid-surface extraction and mesh quality improvement.</p>
+      </div>
+
+      <div class="project" data-title="Crash Setup — Simplified Bumper" data-body="Initial LS‑DYNA setup: shell elements, contact definitions, and boundary conditions. Ran basic frontal impact case and gathered displacement / energy plots. Working on validation and finer mesh convergence studies.">
+        <h4>Crash Setup — Simplified Bumper</h4>
+        <p>LS‑DYNA learning project: setup, contact and first-run analysis.</p>
+      </div>
+
+      <div class="project" data-title="CAD Optimization — Linkage Arm" data-body="Topology study to reduce mass while retaining stiffness; exported optimized shape back to CAD and prepared for manufacturing checks. Achieved ~18% mass reduction with acceptable stress distribution.">
+        <h4>CAD Optimization — Linkage Arm</h4>
+        <p>Topology / thickness optimization loop with manufacturability checks.</p>
+      </div>
+
+      <!-- Add more .project blocks as you build projects -->
+    </div>
+
+    <div id="projectModal" class="modal" role="dialog" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-top">
+          <div>
+            <strong id="modalTitle">Title</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px" id="modalBody">Details</div>
+          </div>
+          <div>
+            <button class="close" onclick="closeModal()">Close</button>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <p id="modalMore" style="color:var(--muted)"></p>
+        </div>
+      </div>
+    </div>
+
+    <section id="about" style="margin-top:36px">
+      <h3 class="section">About</h3>
+      <p style="color:var(--muted);max-width:860px">I’m Abishek — a design engineer with strong CAD skills and hands-on meshing experience. I’m building practical FEA expertise and currently learning solver workflows in LS‑DYNA to run crash and dynamic studies. I prefer fast iterations, clean geometry, and solutions that are verifiable and manufacturable.</p>
+    </section>
+
+    <section id="contact" style="margin-top:28px">
+      <h3 class="section">Contact</h3>
+      <p style="color:var(--muted)">Email: <a href="mailto:your.email@example.com">your.email@example.com</a> · GitHub: <a href="https://github.com/abishek-vr" target="_blank">github.com/abishek-vr</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <small>© 2025 Abishek VR — Built for startups and fast product cycles.</small>
+  </footer>
+
+  <script>
+    /* --- Simple starfield with parallax --- */
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    let stars = [];
+    const STAR_COUNT = Math.min(160, Math.floor(W/7));
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+    function initStars(){stars=[];for(let i=0;i<STAR_COUNT;i++){stars.push({x:rand(0,W),y:rand(0,H),z:rand(0.2,1),r:rand(0.3,1.8),vx:rand(-0.02,0.02)})}}
+    initStars();
+
+    function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;initStars()}
+    window.addEventListener('resize',resize);
+
+    function draw(){ctx.clearRect(0,0,W,H);
+      // gradient nebula
+      const g = ctx.createLinearGradient(0,0,W,H);
+      g.addColorStop(0,'rgba(10,8,18,0.6)');g.addColorStop(1,'rgba(5,10,20,0.7)');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+      // faint nebula blobs
+      for(let i=0;i<6;i++){
+        ctx.beginPath();
+        const gx = Math.sin(i+Date.now()/7000)* (W*0.5) + W*0.5;
+        const gy = (H*0.2)+ (i*(H*0.12));
+        const radius = 300 + (i*40);
+        const grad = ctx.createRadialGradient(gx,gy,1,gx,gy,radius);
+        grad.addColorStop(0, 'rgba(40,50,80,0.06)');
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad; ctx.fillRect(gx-radius,gy-radius,radius*2,radius*2);
+      }
+
+      // stars
+      for(let s of stars){
+        s.x += s.vx * (1/s.z);
+        s.y += Math.sin((s.x+Date.now()/5000)*0.0001) * 0.3;
+        if(s.x<0) s.x=W; if(s.x>W) s.x=0; if(s.y<0) s.y=H; if(s.y>H) s.y=0;
+        ctx.beginPath(); ctx.globalAlpha = 0.9/s.z; ctx.fillStyle = 'white'; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+
+    /* --- Project modal logic --- */
+    const projects = document.querySelectorAll('.project');
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalMore = document.getElementById('modalMore');
+
+    projects.forEach(p=>{
+      p.addEventListener('click',()=>{
+        modalTitle.textContent = p.dataset.title;
+        modalBody.textContent = p.dataset.body;
+        modalMore.textContent = 'More images and solver decks can be attached to this project in the repo. Replace this text with links or figures.';
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden','false');
+      })
+    })
+    function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+    window.closeModal = closeModal;
+
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+
+    /* Accessibility: close modal on Esc */
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal()}})
+  </script>
+</body>
+</html>
