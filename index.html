@@ -1,91 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Asteroid Belt Portfolio — Abishek V R</title>
-  <style>
-    :root{
-      --space-black:#0B0F14;
-      --deep-navy:#0E1A27;
-      --electric-cyan:#39D0FF;
-      --brake-red:#F04438;
-      --ember:#FF8A3D;
-      --fog:#9FB2C8;
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Asteroid Belt Portfolio — Abishek V R</title>
+<style>
+  :root{
+    --electric-cyan:#39D0FF;
+    --panel: rgba(14,26,39,.6);
+  }
+  html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  /* Your backgrounds (local files) */
+  .bg-layer,.bg-hero,.bg-cluster{position:fixed;inset:0;pointer-events:none}
+  .bg-layer{z-index:-3;background:url("./galaxy.jpg") center/cover no-repeat;filter:brightness(.65) saturate(1.1)}
+  .bg-hero{z-index:-2;background:url("./nebula.jpg") center/cover no-repeat;mix-blend-mode:screen;opacity:.35}
+  .bg-cluster{z-index:-1;background:url("./cluster.jpg") center/cover no-repeat;mix-blend-mode:lighten;opacity:.15}
+  .shade{position:fixed;inset:0;background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.6) 100%);pointer-events:none;z-index:-1}
 
-      /* Replace these with your images if you have local files */
-      --bg-galaxy: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=2000&q=60');
-      --bg-nebula: url('https://images.unsplash.com/photo-1444703686981-b3abbc4d4fe3?auto=format&fit=crop&w=1600&q=40');
-      --bg-cluster: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1600&q=40');
-    }
-    html, body { height: 100%; margin: 0; background: #000; color: #fff; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-    .bg-layer, .bg-hero, .bg-cluster {
-      position: fixed; inset: 0; pointer-events: none;
-    }
-    .bg-layer { z-index: -3; background: var(--bg-galaxy) center/cover no-repeat; filter: brightness(.6) saturate(1.1); }
-    .bg-hero { z-index: -2; background: var(--bg-nebula) center/cover no-repeat; mix-blend-mode: screen; opacity:.35; }
-    .bg-cluster { z-index: -1; background: var(--bg-cluster) center/cover no-repeat; mix-blend-mode: lighten; opacity:.15; }
+  .panel{backdrop-filter:blur(10px);background:var(--panel);border:1px solid rgba(57,208,255,.22);border-radius:12px}
+  .btn{padding:8px 12px;font-size:14px;color:#fff;border:none;cursor:pointer}
+  .btn:hover{outline:1px solid rgba(57,208,255,.4)}
+  .hud{position:fixed;inset-inline:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px}
+  .name{padding:8px 12px;font-size:14px}
+  canvas{display:block}
+  .list{position:fixed;inset:0;overflow:auto;display:none;padding:88px 16px 24px}
+  .list.open{display:block}
+  .section{max-width:1024px;margin:0 auto 16px;padding:16px}
+  .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .muted{color:#c8d3e0;font-size:13px}
+  .pill{display:inline-block;padding:.25rem .5rem;border-radius:999px;border:1px solid rgba(57,208,255,.35);margin:2px 6px 2px 0}
 
-    .hud {
-      position: fixed; inset-inline: 0; top: 0; display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 10px;
-    }
-    .panel { backdrop-filter: blur(10px); background: rgba(14,26,39,.6); border: 1px solid rgba(57,208,255,.2); border-radius: 12px; }
-    .btn { color:#fff; border:none; padding:8px 12px; font-size:14px; cursor:pointer; }
-    .btn:hover { outline:1px solid rgba(57,208,255,.4); }
-    .name { padding:8px 12px; font-size:14px; }
+  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6)}
+  .overlay.open{display:flex}
+  .card{max-width:680px;width:min(92vw,680px);padding:16px}
 
-    canvas { display:block; }
-    .overlay { position: fixed; inset: 0; display:none; align-items:center; justify-content:center; background: rgba(0,0,0,.6); }
-    .overlay.open { display:flex; }
-    .card { max-width: 680px; width: min(92vw, 680px); padding: 16px; }
-
-    .listview { position: fixed; inset: 0; overflow:auto; display:none; }
-    .listview.open { display:block; padding: 88px 16px 24px; }
-    .section { max-width: 1024px; margin: 0 auto 16px; padding: 16px; }
-
-    /* CSS “satellites” that orbit around the screen center */
-    .orbit-wrap { position: fixed; inset: 0; pointer-events:none; display:grid; place-items:center; }
-    .orbit { width: 240px; height: 240px; position: relative; animation: spin 28s linear infinite; }
-    .sat { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 999px; background: #fff; box-shadow: 0 0 12px #39D0FF; }
-    .sat a { position: absolute; top: -18px; left: 12px; pointer-events:auto; text-decoration:none; color:#fff; font-size:12px; padding:4px 8px; }
-    .sat-email { transform: rotate(0deg) translateX(120px) rotate(0deg); }
-    .sat-linked { transform: rotate(120deg) translateX(120px) rotate(-120deg); }
-    .sat-resume { transform: rotate(240deg) translateX(120px) rotate(-240deg); }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-    /* small helper */
-    .muted { color: #c8d3e0; font-size: 13px; }
-    .pill { display:inline-block; padding:.25rem .5rem; border-radius: 999px; border:1px solid rgba(57,208,255,.35); margin:2px 6px 2px 0; }
-    .grid { display:grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .link { color: #39D0FF; text-decoration: none; }
-  </style>
+  /* Orbiting satellites (contact/resume) */
+  .orbit-wrap{position:fixed;inset:0;pointer-events:none;display:grid;place-items:center}
+  .orbit{width:240px;height:240px;position:relative;animation:spin 28s linear infinite}
+  .sat{position:absolute;top:50%;left:50%;width:10px;height:10px;margin:-5px;border-radius:999px;background:#fff;box-shadow:0 0 12px var(--electric-cyan)}
+  .sat a{position:absolute;top:-18px;left:12px;pointer-events:auto;text-decoration:none;color:#fff;font-size:12px;padding:4px 8px}
+  .sat-email{transform:rotate(0deg) translateX(120px) rotate(0deg)}
+  .sat-linked{transform:rotate(120deg) translateX(120px) rotate(-120deg)}
+  .sat-resume{transform:rotate(240deg) translateX(120px) rotate(-240deg)}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-  <!-- Backgrounds -->
   <div class="bg-layer"></div>
   <div class="bg-hero"></div>
   <div class="bg-cluster"></div>
+  <div class="shade"></div>
 
-  <!-- HUD -->
   <div class="hud">
     <div class="panel name" id="name">Abishek V R</div>
-    <div style="display:flex; gap:8px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="panel btn" id="motionBtn">Motion: on</button>
       <button class="panel btn" id="audioBtn">Audio: off</button>
       <button class="panel btn" id="listBtn">List view</button>
-      <a class="panel btn" id="aboutBtn" href="#about">About</a>
-      <a class="panel btn" id="experimentsBtn" href="#experiments">Experiments — Under construction 🚧</a>
+      <a class="panel btn" href="#about">About</a>
+      <a class="panel btn" href="#experiments">Experiments — Under construction 🚧</a>
       <a class="panel btn" id="resumeBtn" target="_blank" rel="noreferrer">Resume</a>
       <a class="panel btn" id="emailBtn">Email</a>
       <a class="panel btn" id="linkedinBtn" target="_blank" rel="noreferrer">LinkedIn</a>
     </div>
   </div>
 
-  <!-- HTML list view fallback -->
-  <div class="listview" id="list">
+  <div class="list" id="list">
     <div class="section panel">
       <h2>Projects</h2>
-      <p class="muted">Tap any item to open details. Items marked “Under construction 🚧” are placeholders.</p>
+      <p class="muted">Tap any item to open details. “Under construction 🚧” are placeholders.</p>
       <div id="projectList" class="grid"></div>
     </div>
     <div class="section panel">
@@ -94,19 +77,17 @@
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="overlay" id="modal">
     <div class="panel card">
-      <h3 id="modalTitle" style="margin:0 0 6px;"></h3>
-      <p id="modalSummary" class="muted" style="margin:0 0 8px;"></p>
+      <h3 id="modalTitle" style="margin:0 0 6px"></h3>
+      <p id="modalSummary" class="muted" style="margin:0 0 8px"></p>
       <div id="modalBody"></div>
-      <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
         <button class="panel btn" id="closeModal">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- Satellites (contact/resume) orbiting the “sun” -->
   <div class="orbit-wrap" aria-hidden="true">
     <div class="orbit">
       <div class="sat sat-email"><a class="panel" id="satEmail" href="#">Email</a></div>
@@ -115,242 +96,220 @@
     </div>
   </div>
 
-  <!-- Three.js canvas -->
   <canvas id="scene"></canvas>
 
-  <script type="module">
-    // Config (edit these)
-    const SITE = {
-      name: 'Abishek V R',
-      email: 'abishekvr369@gmail.com',
-      linkedin: 'https://www.linkedin.com/in/abishek-v-r-a45899239/',
-      resume: './resume.pdf' // place your PDF next to this file; or use a full URL
-    };
+<script type="module">
+  // Config
+  const SITE = {
+    name: 'Abishek V R',
+    email: 'abishekvr369@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/abishek-v-r-a45899239/',
+    resume: './resume.pdf'
+  };
 
-    const PROJECTS = [
-      { title: 'Adaptive Aero Wing', slug: 'adaptive-aero-wing', summary: 'Active aero wing for high-speed stability.', role: 'Mechanical + Controls', results: ['-12% Cd at 120 km/h','Closed-loop PID'], tech: ['CAD','CFD','STM32','CAN'] },
-      { title: 'EV Powertrain Bench', slug: 'ev-powertrain-bench', summary: 'Motor + inverter testbench with telemetry.', role: 'Integration', results: ['15% higher efficiency window','CAN logging'], tech: ['SiC Inverter','BMS','CANopen'] },
-      { title: 'Under construction 🚧', slug: 'tbd', summary: 'Placeholder for upcoming automotive project.', role: '—', results: [], tech: [] }
-    ];
+  const PROJECTS = [
+    { title: 'Adaptive Aero Wing', slug: 'adaptive-aero-wing', summary: 'Active aero wing for high-speed stability.', role: 'Mechanical + Controls', results: ['-12% Cd at 120 km/h','Closed-loop PID'], tech: ['CAD','CFD','STM32','CAN'] },
+    { title: 'EV Powertrain Bench', slug: 'ev-powertrain-bench', summary: 'Motor + inverter testbench with telemetry.', role: 'Integration', results: ['15% higher efficiency window','CAN logging'], tech: ['SiC Inverter','BMS','CANopen'] },
+    { title: 'Under construction 🚧', slug: 'tbd', summary: 'Placeholder for upcoming automotive project.', role: '—', results: [], tech: [] }
+  ];
 
-    const MILESTONES = [
-      { type: 'education', title: 'B.S. Mechanical Engineering', date: '2024', moons: ['Vehicle Dynamics','Powertrain Systems','Capstone EV kart'] },
-      { type: 'internship', title: 'Automotive R&D Intern', date: '2023', moons: ['Dyno testing','Aero protos','DAQ pipelines'] },
-      { type: 'note', title: 'More milestones — Under construction 🚧', date: '', moons: [] }
-    ];
+  const MILESTONES = [
+    { type:'education', title:'B.S. Mechanical Engineering', date:'2024', moons:['Vehicle Dynamics','Powertrain Systems','Capstone EV kart'] },
+    { type:'internship', title:'Automotive R&D Intern', date:'2023', moons:['Dyno testing','Aero protos','DAQ pipelines'] },
+    { type:'note', title:'More milestones — Under construction 🚧', date:'', moons:[] }
+  ];
 
-    // Wire HUD links
-    document.getElementById('name').textContent = SITE.name;
-    document.getElementById('resumeBtn').href = SITE.resume;
-    document.getElementById('emailBtn').href = `mailto:${SITE.email}`;
-    document.getElementById('linkedinBtn').href = SITE.linkedin;
-    document.getElementById('satResume').href = SITE.resume;
-    document.getElementById('satEmail').href = `mailto:${SITE.email}`;
-    document.getElementById('satLinked').href = SITE.linkedin;
+  // Wire HUD links
+  name.textContent = SITE.name;
+  resumeBtn.href = SITE.resume;
+  emailBtn.href = `mailto:${SITE.email}`;
+  linkedinBtn.href = SITE.linkedin;
+  satResume.href = SITE.resume;
+  satEmail.href = `mailto:${SITE.email}`;
+  satLinked.href = SITE.linkedin;
 
-    // Build list view content
-    const projectList = document.getElementById('projectList');
-    PROJECTS.forEach((p, i) => {
-      const el = document.createElement('div');
-      el.className = 'panel';
-      el.style.padding = '12px';
-      el.style.cursor = 'pointer';
-      el.innerHTML = `<div style="font-weight:600">${p.title}</div><div class="muted">${p.summary}</div>`;
-      el.onclick = () => openProject(i);
-      projectList.appendChild(el);
-    });
-    const milestoneList = document.getElementById('milestoneList');
-    MILESTONES.forEach(m => {
-      const el = document.createElement('div');
-      el.className = 'pill';
-      el.textContent = m.title;
-      milestoneList.appendChild(el);
-    });
+  // Build list view
+  const projectList = document.getElementById('projectList');
+  PROJECTS.forEach((p,i)=>{
+    const el = document.createElement('div');
+    el.className='panel'; el.style.padding='12px'; el.style.cursor='pointer';
+    el.innerHTML = `<div style="font-weight:600">${p.title}</div><div class="muted">${p.summary}</div>`;
+    el.onclick = ()=>openProject(i); projectList.appendChild(el);
+  });
+  const milestoneList = document.getElementById('milestoneList');
+  MILESTONES.forEach(m=>{ const el=document.createElement('div'); el.className='pill'; el.textContent=m.title; milestoneList.appendChild(el); });
 
-    // Modal helpers
-    const modal = document.getElementById('modal');
-    document.getElementById('closeModal').onclick = () => modal.classList.remove('open');
-    function openProject(i) {
-      const p = PROJECTS[i];
-      document.getElementById('modalTitle').textContent = p.title;
-      document.getElementById('modalSummary').textContent = p.summary;
-      document.getElementById('modalBody').innerHTML =
-        `<div style="margin:6px 0"><b>Role:</b> ${p.role || '—'}</div>` +
-        (p.tech?.length ? `<div style="margin:6px 0"><b>Tech:</b> ${p.tech.join(', ')}</div>` : '') +
-        (p.results?.length ? `<ul style="margin:6px 0 0 18px">${p.results.map(r=>`<li>${r}</li>`).join('')}</ul>` : '');
-      modal.classList.add('open');
+  // Modal
+  const modal = document.getElementById('modal');
+  closeModal.onclick = ()=>modal.classList.remove('open');
+  function openProject(i){
+    const p = PROJECTS[i];
+    modalTitle.textContent = p.title;
+    modalSummary.textContent = p.summary;
+    modalBody.innerHTML =
+      `<div style="margin:6px 0"><b>Role:</b> ${p.role||'—'}</div>` +
+      (p.tech?.length? `<div style="margin:6px 0"><b>Tech:</b> ${p.tech.join(', ')}</div>`:'') +
+      (p.results?.length? `<ul style="margin:6px 0 0 18px">${p.results.map(r=>`<li>${r}</li>`).join('')}</ul>`:'');
+    modal.classList.add('open');
+  }
+
+  // Toggles
+  const listEl = document.getElementById('list');
+  let motionOn = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let audioOn = false;
+  motionBtn.onclick=()=>{ motionOn=!motionOn; motionBtn.textContent=`Motion: ${motionOn?'on':'off'}`; };
+  audioBtn.onclick=()=>{ audioOn=!audioOn; audioBtn.textContent=`Audio: ${audioOn?'on':'off'}`; };
+  listBtn.onclick=()=>{
+    const open = listEl.classList.toggle('open');
+    listBtn.textContent = open ? 'Universe view' : 'List view';
+    scene.style.display = open ? 'none' : 'block';
+  };
+
+  // Optional hover audio (place rev.mp3 next to this file)
+  let revAudio = null;
+  try{ revAudio = new Audio('./rev.mp3'); revAudio.volume=0.25; }catch(e){}
+
+  // Three.js scene (transparent so your backgrounds show)
+  import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+  import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+  const canvas = document.getElementById('scene');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setClearColor(0x000000, 0); // transparent
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+  const scene3 = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
+  camera.position.set(0, 2.3, 11);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+
+  // Resize
+  function resize(){
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, true);            // update canvas size too
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+
+  // Lights
+  scene3.add(new THREE.AmbientLight(0xffffff, .35));
+  const dir = new THREE.DirectionalLight(0xffffff, 1.2); dir.position.set(3,5,2); scene3.add(dir);
+
+  // Stars
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 1000;
+  const starPos = new Float32Array(starCount*3);
+  for(let i=0;i<starCount;i++){
+    starPos[i*3+0]=(Math.random()-0.5)*160;
+    starPos[i*3+1]=(Math.random()-0.5)*100;
+    starPos[i*3+2]=(Math.random()-0.5)*160;
+  }
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos,3));
+  const starMat = new THREE.PointsMaterial({ color:0xffffff, size:.6, sizeAttenuation:true, transparent:true, opacity:.85 });
+  scene3.add(new THREE.Points(starGeo, starMat));
+
+  // “Sun”
+  const sun = new THREE.Mesh(new THREE.SphereGeometry(.35,32,32), new THREE.MeshBasicMaterial({ color:0xffd166 }));
+  scene3.add(sun);
+
+  // Satellites (3D to match CSS orbit)
+  const satMat = new THREE.MeshStandardMaterial({ color:0xffffff, emissive:new THREE.Color('#39D0FF'), emissiveIntensity:.6 });
+  const satGeo = new THREE.SphereGeometry(.12,16,16);
+  const sats=[0,120,240].map(a=>({mesh:new THREE.Mesh(satGeo,satMat),angle:THREE.MathUtils.degToRad(a)}));
+  sats.forEach(s=>scene3.add(s.mesh));
+
+  // Asteroid belt (clickable)
+  const asteroids=[];
+  const count=Math.max(36, PROJECTS.length);
+  const radius=8;
+  const aGeo=new THREE.IcosahedronGeometry(1,0);
+  for(let i=0;i<count;i++){
+    const m=new THREE.Mesh(aGeo,new THREE.MeshStandardMaterial({ roughness:.9, metalness:.1, color:0x263647 }));
+    const ang=(i/count)*Math.PI*2;
+    const r=radius+(Math.random()-0.5)*2.2;
+    m.position.set(Math.cos(ang)*r,(Math.random()-0.5)*0.8,Math.sin(ang)*r);
+    const s=.25+Math.random()*.35; m.scale.set(s,s,s);
+    m.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
+    m.userData.projectIndex=i%PROJECTS.length;
+    m.material.color.lerp(new THREE.Color('#39D0FF'), Math.random()*0.2);
+    scene3.add(m); asteroids.push(m);
+  }
+
+  // Planets (milestones)
+  const pGeo=new THREE.SphereGeometry(.45,32,32);
+  const planets=[];
+  MILESTONES.forEach((m,i)=>{
+    const ang=(i/Math.max(1,MILESTONES.length))*Math.PI*2;
+    const x=Math.cos(ang)*5, z=Math.sin(ang)*5;
+    const me=new THREE.Mesh(pGeo,new THREE.MeshStandardMaterial({ color:(i%2?'#39D0FF':'#F04438'), emissive:'#1b2a38', emissiveIntensity:.3 }));
+    me.position.set(x,-1.25,z); scene3.add(me); planets.push(me);
+  });
+
+  // Comet with simple trail
+  const comet = new THREE.Mesh(new THREE.SphereGeometry(.15,16,16), new THREE.MeshBasicMaterial({ color:'#39D0FF' }));
+  let cometActive=false, cometVel=new THREE.Vector3(), cometTimer=0;
+  const trailN=18, trail=[];
+  for(let i=0;i<trailN;i++){
+    const t=new THREE.Mesh(new THREE.SphereGeometry(.08*(1-i/trailN),8,8), new THREE.MeshBasicMaterial({ color:'#39D0FF', transparent:true, opacity:(1-i/trailN)*.6 }));
+    t.visible=false; scene3.add(t); trail.push(t);
+  }
+  function spawnComet(){
+    comet.position.set(-25, (Math.random()*8-4), 25);
+    cometVel.set(Math.random()*.6+.4, Math.random()*.2-.1, -1).normalize().multiplyScalar(14);
+    if(!scene3.children.includes(comet)) scene3.add(comet);
+    cometActive=true; cometTimer=6;
+    trail.forEach(t=>{ t.visible=true; t.position.copy(comet.position); });
+  }
+  setInterval(spawnComet, 70000); spawnComet();
+
+  // Raycaster (use canvas for coords)
+  const raycaster=new THREE.Raycaster(), mouse=new THREE.Vector2();
+  let hovered=null;
+  canvas.addEventListener('pointermove', (e)=>{
+    const rect=canvas.getBoundingClientRect();
+    mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+    mouse.y= -((e.clientY-rect.top)/rect.height)*2+1;
+  });
+  canvas.addEventListener('pointerup', ()=>{
+    if(hovered && hovered.object?.userData?.projectIndex!=null) openProject(hovered.object.userData.projectIndex);
+  });
+
+  // Animate
+  function loop(){
+    if(motionOn){
+      asteroids.forEach(m=>{ m.rotation.x+=.0035; m.rotation.y+=.006; });
+      planets.forEach((m,i)=>{ m.rotation.y+=.002+i*.0005; });
+    }
+    // satellites orbit
+    sats.forEach(s=>{ s.angle+=.002; const r=2.6; s.mesh.position.set(Math.cos(s.angle)*r,.6,Math.sin(s.angle)*r); });
+
+    // comet
+    if(cometActive){
+      const dt=1/60; comet.position.addScaledVector(cometVel,dt); cometTimer-=dt;
+      if(comet.position.length()>60||cometTimer<=0){ cometActive=false; scene3.remove(comet); trail.forEach(t=>t.visible=false); }
+      else{ for(let i=trail.length-1;i>0;i--) trail[i].position.copy(trail[i-1].position); trail[0].position.copy(comet.position); }
     }
 
-    // Toggles
-    const listEl = document.getElementById('list');
-    let motionOn = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let audioOn = false;
-    document.getElementById('motionBtn').onclick = () => {
-      motionOn = !motionOn;
-      document.getElementById('motionBtn').textContent = `Motion: ${motionOn ? 'on' : 'off'}`;
-    };
-    document.getElementById('audioBtn').onclick = () => {
-      audioOn = !audioOn;
-      document.getElementById('audioBtn').textContent = `Audio: ${audioOn ? 'on' : 'off'}`;
-    };
-    document.getElementById('listBtn').onclick = () => {
-      const open = listEl.classList.toggle('open');
-      document.getElementById('listBtn').textContent = open ? 'Universe view' : 'List view';
-      document.getElementById('scene').style.display = open ? 'none' : 'block';
-    };
-
-    // Optional hover audio
-    let revAudio = null;
-    try { revAudio = new Audio('./audio/rev.mp3'); revAudio.volume = 0.25; } catch(e) {}
-
-    // Three.js scene
-    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-    import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-
-    const canvas = document.getElementById('scene');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    function resize() {
-      const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h; camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize);
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x02060b);
-
-    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
-    camera.position.set(0, 2.3, 11);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
-
-    const amb = new THREE.AmbientLight(0xffffff, 0.35); scene.add(amb);
-    const dir = new THREE.DirectionalLight(0xffffff, 1.2); dir.position.set(3,5,2); scene.add(dir);
-
-    // Stars
-    const starGeo = new THREE.BufferGeometry();
-    const starCount = 800;
-    const starPos = new Float32Array(starCount * 3);
-    for (let i=0;i<starCount;i++){ starPos[i*3+0]=(Math.random()-0.5)*160; starPos[i*3+1]=(Math.random()-0.5)*100; starPos[i*3+2]=(Math.random()-0.5)*160; }
-    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos,3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.6, sizeAttenuation: true, transparent: true, opacity: .8 });
-    scene.add(new THREE.Points(starGeo, starMat));
-
-    // “Sun”
-    const sun = new THREE.Mesh(new THREE.SphereGeometry(0.35,32,32), new THREE.MeshBasicMaterial({ color: 0xffd166 }));
-    scene.add(sun);
-
-    // Satellites (3D dots to match CSS orbit)
-    const satMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: new THREE.Color('#39D0FF'), emissiveIntensity: .6 });
-    const satSphere = new THREE.SphereGeometry(0.12, 16, 16);
-    const sats = [0,120,240].map(deg=>{
-      const m = new THREE.Mesh(satSphere, satMat);
-      scene.add(m); return { mesh: m, angle: THREE.MathUtils.degToRad(deg) };
-    });
-
-    // Asteroid belt (projects)
-    const asteroids = [];
-    const count = Math.max(30, PROJECTS.length);
-    const radius = 8;
-    const aGeo = new THREE.IcosahedronGeometry(1,0);
-    const aMat = new THREE.MeshStandardMaterial({ roughness:.9, metalness:.1, color: 0x263647 });
-    for (let i=0;i<count;i++){
-      const m = new THREE.Mesh(aGeo, aMat.clone());
-      const ang = (i / count) * Math.PI * 2;
-      const r = radius + (Math.random()-0.5)*2.2;
-      m.position.set(Math.cos(ang)*r, (Math.random()-0.5)*0.8, Math.sin(ang)*r);
-      const s = 0.25 + Math.random()*0.35; m.scale.set(s,s,s);
-      m.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-      m.userData.projectIndex = i % PROJECTS.length;
-      m.material.color.lerp(new THREE.Color('#39D0FF'), Math.random()*0.2);
-      scene.add(m); asteroids.push(m);
+    // raycast
+    raycaster.setFromCamera(mouse, camera);
+    const hit = raycaster.intersectObjects(asteroids,false)[0];
+    if(hit!==hovered){
+      document.body.style.cursor = hit ? 'pointer' : 'auto';
+      if(hit && audioOn && revAudio){ try{ revAudio.currentTime=0; revAudio.play(); }catch(e){} }
+      if(hovered?.object) hovered.object.scale.multiplyScalar(1/1.12);
+      hovered = hit || null;
+      if(hovered?.object) hovered.object.scale.multiplyScalar(1.12);
     }
 
-    // Planets (milestones)
-    const planets = [];
-    const pGeo = new THREE.SphereGeometry(0.45, 32, 32);
-    MILESTONES.forEach((m,i)=>{
-      const ang = (i / Math.max(1,MILESTONES.length)) * Math.PI * 2;
-      const x = Math.cos(ang) * 5;
-      const z = Math.sin(ang) * 5;
-      const mesh = new THREE.Mesh(pGeo, new THREE.MeshStandardMaterial({ color: (i%2? '#39D0FF':'#F04438'), emissive: '#1b2a38', emissiveIntensity:.3 }));
-      mesh.position.set(x, -1.25, z);
-      scene.add(mesh); planets.push(mesh);
-    });
+    renderer.render(scene3, camera);
+    requestAnimationFrame(loop);
+  }
 
-    // Comet
-    const comet = new THREE.Mesh(new THREE.SphereGeometry(0.15,16,16), new THREE.MeshBasicMaterial({ color:'#39D0FF' }));
-    let cometActive = false, cometVel = new THREE.Vector3(), cometTimer = 0;
-    const trailN = 18, trail = [];
-    for (let i=0;i<trailN;i++){
-      const t = new THREE.Mesh(new THREE.SphereGeometry(0.08*(1-i/trailN), 8, 8), new THREE.MeshBasicMaterial({ color:'#39D0FF', transparent:true, opacity: (1-i/trailN)*0.6 }));
-      t.visible=false; scene.add(t); trail.push(t);
-    }
-    function spawnComet(){
-      comet.position.set(-25, (Math.random()*8-4), 25);
-      cometVel.set(Math.random()*0.6+0.4, Math.random()*0.2-0.1, -1).normalize().multiplyScalar(14);
-      if(!scene.children.includes(comet)) scene.add(comet);
-      cometActive = true; cometTimer = 6;
-      trail.forEach(t=>{ t.visible=true; t.position.copy(comet.position); });
-    }
-    setInterval(spawnComet, 70000); spawnComet();
-
-    // Raycasting for hover/click
-    const raycaster = new THREE.Raycaster(), mouse = new THREE.Vector2();
-    let hovered = null;
-    window.addEventListener('mousemove', (e)=>{
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX-rect.left)/rect.width)*2 - 1;
-      mouse.y = -((e.clientY-rect.top)/rect.height)*2 + 1;
-    });
-    window.addEventListener('click', ()=>{
-      if (hovered && hovered.object?.userData?.projectIndex != null) {
-        openProject(hovered.object.userData.projectIndex);
-      }
-    });
-
-    // Loop
-    resize();
-    renderer.setAnimationLoop((t)=>{
-      if (motionOn){
-        asteroids.forEach(m=>{ m.rotation.x += 0.0035; m.rotation.y += 0.006; });
-        planets.forEach((m, i)=>{ m.rotation.y += 0.002 + i*0.0005; });
-      }
-
-      // satellites orbit
-      sats.forEach((s,i)=>{
-        s.angle += 0.002;
-        const r = 2.6;
-        s.mesh.position.set(Math.cos(s.angle)*r, 0.6, Math.sin(s.angle)*r);
-      });
-
-      // comet move + trail
-      if (cometActive){
-        const dt = 1/60;
-        comet.position.addScaledVector(cometVel, dt);
-        cometTimer -= dt;
-        if (comet.position.length()>60 || cometTimer<=0){
-          cometActive=false; scene.remove(comet); trail.forEach(t=>t.visible=false);
-        } else {
-          for (let i=trail.length-1;i>0;i--) trail[i].position.copy(trail[i-1].position);
-          trail[0].position.copy(comet.position);
-        }
-      }
-
-      // raycast
-      raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects(asteroids, false);
-      const hit = hits[0];
-      if (hit !== hovered){
-        document.body.style.cursor = hit ? 'pointer' : 'auto';
-        hovered = hit || null;
-        if (hit && audioOn && revAudio) { try { revAudio.currentTime = 0; revAudio.play(); } catch(e){} }
-      }
-
-      renderer.render(scene, camera);
-    });
-  </script>
+  // Start
+  resize();
+  requestAnimationFrame(loop);
+</script>
 </body>
 </html>
