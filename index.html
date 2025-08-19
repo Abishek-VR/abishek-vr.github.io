@@ -1,131 +1,1002 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, FileText } from "lucide-react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abishek V R - Junior Design Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-export default function Portfolio() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-indigo-900 to-black text-white font-sans">
-      {/* Landing Page */}
-      <section className="flex flex-col items-center justify-center min-h-screen text-center px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-4xl md:text-6xl font-bold mb-4"
-        >
-          Design Engineer | Aerospace | FEA | CFD | Structural Dynamics
-        </motion.h1>
-        <p className="text-lg md:text-xl mb-6 italic">
-          “Exploring the cosmos through engineering precision.”
-        </p>
-        <img
-          src="/profile.jpg"
-          alt="Profile"
-          className="w-40 h-40 rounded-full border-4 border-indigo-500 shadow-lg mb-6"
-        />
-      </section>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #0a0a0a;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-      {/* About Me */}
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-400">About Me</h2>
-        <p className="max-w-3xl mb-4">
-          M.Tech Aerospace (IIT/TUM). Interests in FEA, CFD, structures, and optimization.
-          Skilled in CAD and solvers (ANSYS, HyperMesh, LS-DYNA, CATIA). Passion for
-          space systems, sustainable aviation, and simulations.
-        </p>
-        <p className="italic text-indigo-300">
-          “I engineer ideas into reality, bridging theory and computation.”
-        </p>
-      </section>
+        /* Animated Galaxy Background */
+        .galaxy-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 300% 300%, 200% 200%, 400% 400%, 100% 100%;
+            animation: galaxyMove 20s ease-in-out infinite;
+        }
 
-      {/* Projects */}
-      <section className="py-16 px-6 md:px-20 bg-black/40">
-        <h2 className="text-3xl font-bold mb-10 text-indigo-400">Projects</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            {
-              title: "FEA Crash Simulation with LS-DYNA",
-              desc: "Crash analysis of vehicle structure using LS-DYNA to predict deformation and safety performance.",
-              img: "/project1.jpg",
-            },
-            {
-              title: "Optimization of Aircraft Wing Rib",
-              desc: "Performed optimization using HyperMesh & OptiStruct to reduce weight and improve strength.",
-              img: "/project2.jpg",
-            },
-            {
-              title: "CFD Analysis of Supersonic Intake",
-              desc: "Simulated airflow and shock interactions in a supersonic intake using ANSYS Fluent.",
-              img: "/project3.jpg",
-            },
-          ].map((p, i) => (
-            <Card key={i} className="bg-white/5 border border-indigo-700 shadow-xl">
-              <img src={p.img} alt={p.title} className="w-full h-40 object-cover" />
-              <CardContent className="p-4">
-                <h3 className="text-xl font-semibold mb-2 text-indigo-300">{p.title}</h3>
-                <p className="text-sm text-gray-300">{p.desc}</p>
-              </CardContent>
-            </Card>
-          ))}
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star.small {
+            width: 1px;
+            height: 1px;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+        }
+
+        .star.large {
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes galaxyMove {
+            0%, 100% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+            33% { background-position: 30% 50%, 70% 20%, 20% 90%, 0% 0%; }
+            66% { background-position: 80% 20%, 40% 80%, 90% 30%, 0% 0%; }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(44, 62, 80, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: transparent;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            z-index: -1;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-intro {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 2rem;
+            background: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #666;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .cta-button {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        section:first-of-type {
+            background: transparent;
+            backdrop-filter: none;
+            box-shadow: none;
+            border: none;
+            margin: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 50px;
+            height: 3px;
+            background: #3498db;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            text-align: center;
+        }
+
+        .about-placeholder {
+            width: 250px;
+            height: 250px;
+            background: #3498db;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 0 auto;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* Skills Section */
+        .skills {
+            background: rgba(248, 249, 250, 0.95);
+            backdrop-filter: blur(15px);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
+        }
+
+        .skill-category h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #3498db;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Experience Section */
+        .experience-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .experience-item {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            margin-left: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .experience-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 1rem;
+            height: 1rem;
+            background: #3498db;
+            border-radius: 50%;
+        }
+
+        .experience-date {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-company {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+
+        .experience-achievements {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .experience-achievements li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .experience-achievements li::before {
+            content: '▸';
+            color: #3498db;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Projects Section */
+        .projects {
+            background: rgba(248, 249, 250, 0.95);
+            backdrop-filter: blur(15px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .project-links a {
+            color: #3498db;
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .education-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .education-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
+        }
+
+        .degree-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .institution {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-year {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .contact .section-title {
+            color: white;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 1rem;
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        .contact-item a {
+            color: #ecf0f1;
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            color: #3498db;
+        }
+
+        .download-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 2rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .experience-item {
+                margin-left: 0;
+            }
+
+            .experience-item::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="nav-brand">Abishek V R</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </div>
-      </section>
+    </nav>
 
-      {/* Skills */}
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-400">Skills</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {["FEA", "CFD", "Optimization", "ANSYS", "HyperMesh", "LS-DYNA", "CATIA", "MATLAB", "Python"].map(
-            (skill, i) => (
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                key={i}
-                className="p-4 bg-white/5 rounded-2xl border border-indigo-700 text-center shadow-md"
-              >
-                {skill}
-              </motion.div>
-            )
-          )}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="profile-photo">🛠️</div>
+                <h1>Abishek V R</h1>
+                <p class="hero-tagline">Junior Design Engineer | Sheet Metal & FRP Design Specialist</p>
+                <p class="hero-intro">
+                    Aeronautical Engineer with expertise in heavy machinery design at Tata Hitachi Construction Machinery. 
+                    Specialized in sheet metal design, FRP components, and product lifecycle management with passion for innovation.
+                </p>
+                <a href="#contact" class="cta-button">Get In Touch</a>
+            </div>
         </div>
-      </section>
+    </section>
 
-      {/* Experience */}
-      <section className="py-16 px-6 md:px-20 bg-black/40">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-400">Experience</h2>
-        <p className="max-w-3xl">
-          Academic and research projects in aerospace simulations, optimization, and structural analysis. Completed certifications and workshops on ANSYS, HyperMesh, and LS-DYNA.
-        </p>
-      </section>
-
-      {/* Blog */}
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-400">Blog</h2>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>FEA vs CFD in Aerospace Simulations</li>
-          <li>How HyperMesh Speeds Up Structural Analysis</li>
-          <li>What I Learned From My First LS-DYNA Crash Simulation</li>
-        </ul>
-      </section>
-
-      {/* Contact */}
-      <section className="py-16 px-6 md:px-20 bg-black/60 text-center">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-400">Contact</h2>
-        <div className="flex justify-center space-x-6">
-          <Button variant="outline" className="rounded-full border-indigo-400">
-            <Mail className="mr-2" size={18} /> Email
-          </Button>
-          <Button variant="outline" className="rounded-full border-indigo-400">
-            <Linkedin className="mr-2" size={18} /> LinkedIn
-          </Button>
-          <Button variant="outline" className="rounded-full border-indigo-400">
-            <Github className="mr-2" size={18} /> GitHub
-          </Button>
-          <Button variant="outline" className="rounded-full border-indigo-400">
-            <FileText className="mr-2" size={18} /> Resume
-          </Button>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="about-placeholder">Professional Photo</div>
+                </div>
+                <div class="about-text">
+                    <p>
+                        I'm Abishek V R, an Aeronautical Engineer working as a Junior Design Engineer at Tata Hitachi Construction 
+                        Machinery via Layam. With a B.E. in Aeronautical Engineering from Bannari Amman Institute of Technology, 
+                        I've transitioned into heavy machinery design, bringing aerospace precision to construction equipment.
+                    </p>
+                    <p>
+                        My current work focuses on sheet metal and FRP component design for exterior profiles, NPD projects 
+                        including Mini Compact machines and EV machines. I'm experienced in VAVE projects, competitor benchmarking, 
+                        and localization efforts that drive cost savings and improve manufacturability.
+                    </p>
+                    <p>
+                        While I work in heavy machinery, my heart still beats for aircraft design. I enjoy working with advanced 
+                        CAD tools, solving complex design challenges, and contributing to NCC activities. I believe in continuous 
+                        learning and applying aerospace engineering principles to create innovative solutions across industries.
+                    </p>
+                </div>
+            </div>
         </div>
-      </section>
-    </div>
-  );
-}
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Skills & Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>CAD & Design Tools</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">CATIA V5</span>
+                        <span class="skill-tag">Siemens NX</span>
+                        <span class="skill-tag">HyperMesh</span>
+                        <span class="skill-tag">LS-DYNA (Learning)</span>
+                        <span class="skill-tag">Siemens Teamcenter</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Design Specializations</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Sheet Metal Design</span>
+                        <span class="skill-tag">FRP Components</span>
+                        <span class="skill-tag">Plastic Part Design</span>
+                        <span class="skill-tag">Surface Modelling</span>
+                        <span class="skill-tag">GD&T</span>
+                        <span class="skill-tag">Drafting</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Product Development</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">NPD Projects</span>
+                        <span class="skill-tag">VAVE Implementation</span>
+                        <span class="skill-tag">Localization</span>
+                        <span class="skill-tag">DFM/DFA</span>
+                        <span class="skill-tag">BOM Management</span>
+                        <span class="skill-tag">ECN Handling</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Additional Skills</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">2D to 3D Conversion</span>
+                        <span class="skill-tag">Competitor Benchmarking</span>
+                        <span class="skill-tag">Manufacturing Drawings</span>
+                        <span class="skill-tag">Volumetric Studies</span>
+                        <span class="skill-tag">PLM Activities</span>
+                        <span class="skill-tag">Leadership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <h2 class="section-title">Work Experience</h2>
+            <div class="experience-timeline">
+                <div class="experience-item">
+                    <div class="experience-date">Oct 2023 - Present</div>
+                    <h3 class="experience-title">Junior Design Engineer</h3>
+                    <p class="experience-company">Tata Hitachi Construction Machinery (via Layam)</p>
+                    <p>Leading sheet metal and FRP design projects for heavy construction machinery, focusing on exterior profile development and product optimization.</p>
+                    <ul class="experience-achievements">
+                        <li>Designed exterior profiles for NPD projects including Mini Compact machine and 3-tone EV machine</li>
+                        <li>Led VAVE projects, redesigning components to reduce weight and improve manufacturability</li>
+                        <li>Conducted competitor benchmarking and developed detailed manufacturing drawings for ZX140 model</li>
+                        <li>Managed BOM creation and maintenance, coordinated ECN releases and drawing revisions</li>
+                        <li>Achieved significant cost savings through localization projects for toolbox, oil tank, and doors</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-date">Aug 2023 - Oct 2023</div>
+                    <h3 class="experience-title">Mechanical Engineering Intern</h3>
+                    <p class="experience-company">Skill Lync</p>
+                    <p>Specialized training in automotive plastic design and CAD modeling with focus on manufacturability and industry standards.</p>
+                    <ul class="experience-achievements">
+                        <li>Designed plastic bumper using CATIA V5, transforming Class A surface into Class B and C</li>
+                        <li>Integrated key plastic design features including ribs, dog houses, heat stakes, and locators</li>
+                        <li>Worked on industry-relevant case studies enhancing CAD modeling skills</li>
+                        <li>Completed comprehensive training in automotive design principles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Projects & Portfolio</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">Door Trim Design</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Lower Substrate Door Trim Design</h3>
+                        <p class="project-description">
+                            Designed complete door trim assembly including Arm Rest, Lower Substrate, Bottle Holder and Map Pocket 
+                            with proper engineering features and manufacturing considerations.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">CATIA V5</span>
+                            <span class="tech-tag">Plastic Design</span>
+                            <span class="tech-tag">Class A Surfaces</span>
+                            <span class="tech-tag">Manufacturing</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Technical Details →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">Back Door Design</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Automotive Back Door Design</h3>
+                        <p class="project-description">
+                            Complete back door inner panel design with hinge mounting, gas stay mounting, wiper mounting 
+                            and striker positioning with proper reinforcements.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Siemens NX</span>
+                            <span class="tech-tag">Sheet Metal</span>
+                            <span class="tech-tag">Mounting Systems</span>
+                            <span class="tech-tag">7° Draft Angle</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Design Report →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">Roof Structure</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Automotive Roof Design</h3>
+                        <p class="project-description">
+                            Designed comprehensive roof reinforcement system including front, rear, center and bow roof rails 
+                            meeting heat distortion and snow load criteria.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Siemens NX</span>
+                            <span class="tech-tag">Structural Design</span>
+                            <span class="tech-tag">Load Analysis</span>
+                            <span class="tech-tag">Reinforcements</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Structural Analysis →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">Hood Design</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Hood Inner Panel Design</h3>
+                        <p class="project-description">
+                            Hood inner panel design with passenger and pedestrian safety embosses, proper reinforcements 
+                            for hinges and latch systems with manufacturing considerations.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Siemens NX</span>
+                            <span class="tech-tag">Safety Design</span>
+                            <span class="tech-tag">Embossing</span>
+                            <span class="tech-tag">Hinge Systems</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Safety Analysis →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education">
+        <div class="container">
+            <h2 class="section-title">Education & Certifications</h2>
+            <div class="education-grid">
+                <div class="education-card">
+                    <h3 class="degree-title">B.E. Aeronautical Engineering</h3>
+                    <p class="institution">Bannari Amman Institute of Technology</p>
+                    <p class="education-year">2019 - 2023</p>
+                    <p>CGPA: 8.19/10</p>
+                    <p>Location: Sathy, Tamil Nadu</p>
+                </div>
+                
+                <div class="education-card">
+                    <h3 class="degree-title">CAD Master's Certification Program</h3>
+                    <p class="institution">Skill Lync</p>
+                    <p class="education-year">2022 - Present</p>
+                    <div style="text-align: left; margin-top: 1rem;">
+                        <p>• Automotive Plastic Design using CATIA</p>
+                        <p>• Automotive Sheet Metal Design using NX CAD</p>
+                        <p>• Geometric Dimensioning and Tolerance</p>
+                    </div>
+                </div>
+                
+                <div class="education-card">
+                    <h3 class="degree-title">Achievements & Leadership</h3>
+                    <div style="text-align: left; margin-top: 1rem;">
+                        <p>• Best Leadership of the Year - NCC 2022</p>
+                        <p>• 1st Prize - Best Drill Category, NCC</p>
+                        <p>• National Cadet Corps Volunteer (2019-2022)</p>
+                        <p>• Touch Typing - 50 WPM Average</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">📧</div>
+                    <h3>Email</h3>
+                    <a href="mailto:abishekvr369@gmail.com">abishekvr369@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
+                    <h3>LinkedIn</h3>
+                    <a href="https://linkedin.com/in/abishek-v-r" target="_blank">linkedin.com/in/abishek-v-r</a>
+                </div>
+                <div class="contact-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🏗️</div>
+                    <h3>Skill Lync Profile</h3>
+                    <a href="#" target="_blank">View Profile</a>
+                </div>
+                <div class="contact-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">📱</div>
+                    <h3>Phone</h3>
+                    <a href="tel:+919025258698">+91 9025258698</a>
+                </div>
+                <div class="contact-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">📍</div>
+                    <h3>Location</h3>
+                    <p>Salem, Tamil Nadu - 637301</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="download-btn">📄 Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Abishek V R. All rights reserved. | Designed with passion for engineering excellence</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(44, 62, 80, 0.95)';
+                nav.style.backdropFilter = 'blur(25px)';
+            } else {
+                nav.style.background = 'rgba(44, 62, 80, 0.9)';
+                nav.style.backdropFilter = 'blur(20px)';
+            }
+        });
+
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.createElement('div');
+            starsContainer.className = 'stars';
+            
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${Math.random() > 0.7 ? 'large' : Math.random() > 0.5 ? 'medium' : 'small'}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            document.body.appendChild(starsContainer);
+        }
+
+        // Create galaxy background
+        function createGalaxyBackground() {
+            const galaxyBg = document.createElement('div');
+            galaxyBg.className = 'galaxy-bg';
+            document.body.appendChild(galaxyBg);
+        }
+
+        // Initialize space background
+        document.addEventListener('DOMContentLoaded', function() {
+            createGalaxyBackground();
+            createStars();
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all major sections
+        document.querySelectorAll('.skill-category, .experience-item, .project-card, .education-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
