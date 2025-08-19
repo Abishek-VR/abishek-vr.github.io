@@ -1,51 +1,80 @@
-Done. Here’s the same single-file site with background links already wired (no black screen). Just save as index.html and open it. Swap the three URLs later if you want your exact images.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Asteroid Belt Portfolio — Abishek V R</title>
 <style>
   :root{
-    --electric-cyan:#39D0FF;
+    --cyan:#39D0FF;
     --panel: rgba(14,26,39,.6);
+    --bg-galaxy: url("https://upload.wikimedia.org/wikipedia/commons/5/5c/ESO_-_The_magnificent_Messier_101.jpg");
+    --bg-nebula: url("https://upload.wikimedia.org/wikipedia/commons/0/00/Crab_Nebula.jpg");
+    --bg-cluster: url("https://upload.wikimedia.org/wikipedia/commons/5/5e/NGC_3603_HST.jpg");
   }
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  /* Wired backgrounds (replace with your own if desired) */
+  /* Background layers */
   .bg-layer,.bg-hero,.bg-cluster{position:fixed;inset:0;pointer-events:none}
-  .bg-layer{z-index:-3;background:url("https://upload.wikimedia.org/wikipedia/commons/5/5c/ESO_-_The_magnificent_Messier_101.jpg") center/cover no-repeat;filter:brightness(.65) saturate(1.1)}
-  .bg-hero{z-index:-2;background:url("https://upload.wikimedia.org/wikipedia/commons/0/00/Crab_Nebula.jpg") center/cover no-repeat;mix-blend-mode:screen;opacity:.35}
-  .bg-cluster{z-index:-1;background:url("https://upload.wikimedia.org/wikipedia/commons/5/5e/NGC_3603_HST.jpg") center/cover no-repeat;mix-blend-mode:lighten;opacity:.15}
-  .shade{position:fixed;inset:0;background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.6) 100%);pointer-events:none;z-index:-1}
+  .bg-layer{z-index:-3;background:var(--bg-galaxy) center/cover no-repeat;filter:brightness(.65) saturate(1.1)}
+  .bg-hero{z-index:-2;background:var(--bg-nebula) center/cover no-repeat;mix-blend-mode:screen;opacity:.35}
+  .bg-cluster{z-index:-1;background:var(--bg-cluster) center/cover no-repeat;mix-blend-mode:lighten;opacity:.15}
+  .shade{position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 0,rgba(0,0,0,.35) 60%,rgba(0,0,0,.6) 100%);pointer-events:none;z-index:-1}
 
   .panel{backdrop-filter:blur(10px);background:var(--panel);border:1px solid rgba(57,208,255,.22);border-radius:12px}
   .btn{padding:8px 12px;font-size:14px;color:#fff;border:none;cursor:pointer}
   .btn:hover{outline:1px solid rgba(57,208,255,.4)}
   .hud{position:fixed;inset-inline:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px}
   .name{padding:8px 12px;font-size:14px}
-  canvas{display:block}
-  .list{position:fixed;inset:0;overflow:auto;display:none;padding:88px 16px 24px}
-  .list.open{display:block}
-  .section{max-width:1024px;margin:0 auto 16px;padding:16px}
-  .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-  .muted{color:#c8d3e0;font-size:13px}
-  .pill{display:inline-block;padding:.25rem .5rem;border-radius:999px;border:1px solid rgba(57,208,255,.35);margin:2px 6px 2px 0}
 
-  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6)}
-  .overlay.open{display:flex}
-  .card{max-width:680px;width:min(92vw,680px);padding:16px}
+  /* Belt container */
+  .universe{position:fixed;inset:0;display:grid;place-items:center}
+  .belt{position:relative;width:min(80vmin,900px);height:min(80vmin,900px);border-radius:50%;animation:spin 120s linear infinite}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  /* Asteroids (projects) */
+  .asteroid{position:absolute;top:50%;left:50%;width:70px;height:70px;margin:-35px;border-radius:14px;background:linear-gradient(145deg,#1a2633,#0f1620);border:1px solid rgba(57,208,255,.25);box-shadow:inset 0 0 24px rgba(57,208,255,.15), 0 2px 10px rgba(0,0,0,.45);transform-origin:-220px 0;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
+  .asteroid:hover{box-shadow:inset 0 0 30px rgba(57,208,255,.3), 0 6px 18px rgba(0,0,0,.6);transform:scale(1.08)}
+  .asteroid small{font-size:11px;color:#c8d3e0}
+  .asteroid .title{font-weight:600;font-size:12px;line-height:1.2}
+  /* place around ring */
+  .a-0{transform:rotate(0deg) translateX(220px) rotate(0deg)}
+  .a-1{transform:rotate(36deg) translateX(220px) rotate(-36deg)}
+  .a-2{transform:rotate(72deg) translateX(220px) rotate(-72deg)}
+  .a-3{transform:rotate(108deg) translateX(220px) rotate(-108deg)}
+  .a-4{transform:rotate(144deg) translateX(220px) rotate(-144deg)}
+  .a-5{transform:rotate(180deg) translateX(220px) rotate(-180deg)}
+  .a-6{transform:rotate(216deg) translateX(220px) rotate(-216deg)}
+  .a-7{transform:rotate(252deg) translateX(220px) rotate(-252deg)}
+  .a-8{transform:rotate(288deg) translateX(220px) rotate(-288deg)}
+  .a-9{transform:rotate(324deg) translateX(220px) rotate(-324deg)}
+
+  /* “Sun” */
+  .sun{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+  .sun-dot{width:18px;height:18px;border-radius:999px;background:#ffd166;box-shadow:0 0 24px #ffd166aa,0 0 60px #ffd16666}
 
   /* Orbiting satellites (contact/resume) */
-  .orbit-wrap{position:fixed;inset:0;pointer-events:none;display:grid;place-items:center}
-  .orbit{width:240px;height:240px;position:relative;animation:spin 28s linear infinite}
-  .sat{position:absolute;top:50%;left:50%;width:10px;height:10px;margin:-5px;border-radius:999px;background:#fff;box-shadow:0 0 12px var(--electric-cyan)}
+  .orbit{position:absolute;inset:0;margin:auto;width:240px;height:240px;border-radius:50%;animation:spin 28s linear infinite}
+  .sat{position:absolute;top:50%;left:50%;width:10px;height:10px;margin:-5px;border-radius:999px;background:#fff;box-shadow:0 0 12px var(--cyan)}
   .sat a{position:absolute;top:-18px;left:12px;pointer-events:auto;text-decoration:none;color:#fff;font-size:12px;padding:4px 8px}
   .sat-email{transform:rotate(0deg) translateX(120px) rotate(0deg)}
   .sat-linked{transform:rotate(120deg) translateX(120px) rotate(-120deg)}
   .sat-resume{transform:rotate(240deg) translateX(120px) rotate(-240deg)}
-  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  /* Comet */
+  .comet{position:fixed;left:-10vw;top:10vh;width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan);filter:blur(.2px);animation:comet 60s linear infinite}
+  .comet::after{content:"";position:absolute;right:8px;top:3px;width:140px;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:.7;filter:blur(2px)}
+  @keyframes comet{0%{transform:translate(-10vw,10vh)}100%{transform:translate(120vw,-40vh)}}
+
+  /* Modal + list view */
+  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6)}
+  .overlay.open{display:flex}
+  .card{max-width:680px;width:min(92vw,680px);padding:16px}
+  .muted{color:#c8d3e0;font-size:13px}
+  .pill{display:inline-block;padding:.25rem .5rem;border-radius:999px;border:1px solid rgba(57,208,255,.35);margin:2px 6px 2px 0}
+  .list{position:fixed;inset:0;overflow:auto;display:none;padding:88px 16px 24px}
+  .list.open{display:block}
+  .section{max-width:1024px;margin:0 auto 16px;padding:16px}
+  .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 </style>
 </head>
 <body>
@@ -53,191 +82,117 @@ Done. Here’s the same single-file site with background links already wired (no
   <div class="bg-hero"></div>
   <div class="bg-cluster"></div>
   <div class="shade"></div>
+  <div class="comet" aria-hidden="true"></div>
 
   <div class="hud">
-    <div class="panel name" id="name">Abishek V R</div>
+    <div class="panel name">Abishek V R</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="panel btn" id="motionBtn">Motion: on</button>
-      <button class="panel btn" id="audioBtn">Audio: off</button>
       <button class="panel btn" id="listBtn">List view</button>
       <a class="panel btn" href="#about">About</a>
       <a class="panel btn" href="#experiments">Experiments — Under construction 🚧</a>
-      <a class="panel btn" id="resumeBtn" target="_blank" rel="noreferrer">Resume</a>
-      <a class="panel btn" id="emailBtn">Email</a>
-      <a class="panel btn" id="linkedinBtn" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a class="panel btn" href="./resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+      <a class="panel btn" href="mailto:abishekvr369@gmail.com">Email</a>
+      <a class="panel btn" href="https://www.linkedin.com/in/abishek-v-r-a45899239/" target="_blank" rel="noreferrer">LinkedIn</a>
     </div>
   </div>
 
+  <main class="universe">
+    <div class="belt" id="belt">
+      <div class="sun"><div class="sun-dot"></div></div>
+      <div class="orbit" aria-hidden="true">
+        <div class="sat sat-email"><a class="panel" href="mailto:abishekvr369@gmail.com">Email</a></div>
+        <div class="sat sat-linked"><a class="panel" href="https://www.linkedin.com/in/abishek-v-r-a45899239/" target="_blank">LinkedIn</a></div>
+        <div class="sat sat-resume"><a class="panel" href="./resume.pdf" target="_blank">Resume</a></div>
+      </div>
+
+      <!-- 10 asteroid slots around the ring -->
+      <button class="asteroid a-0" data-i="0"><div><div class="title">Adaptive Aero Wing</div><small>Aero + PID</small></div></button>
+      <button class="asteroid a-1" data-i="1"><div><div class="title">EV Powertrain Bench</div><small>Dyno + CAN</small></div></button>
+      <button class="asteroid a-2" data-i="2"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-3" data-i="3"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-4" data-i="4"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-5" data-i="5"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-6" data-i="6"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-7" data-i="7"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-8" data-i="8"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+      <button class="asteroid a-9" data-i="9"><div><div class="title">Under construction 🚧</div><small>Placeholder</small></div></button>
+    </div>
+  </main>
+
+  <!-- List view -->
   <div class="list" id="list">
     <div class="section panel">
       <h2>Projects</h2>
-      <p class="muted">Tap any item to open details. “Under construction 🚧” are placeholders.</p>
-      <div id="projectList" class="grid"></div>
+      <p class="muted">Tap any item to open details.</p>
+      <div class="grid" id="listGrid"></div>
     </div>
     <div class="section panel">
       <h2>Milestones</h2>
-      <div id="milestoneList"></div>
+      <div id="milestones"></div>
     </div>
   </div>
 
+  <!-- Modal -->
   <div class="overlay" id="modal">
     <div class="panel card">
-      <h3 id="modalTitle" style="margin:0 0 6px"></h3>
-      <p id="modalSummary" class="muted" style="margin:0 0 8px"></p>
-      <div id="modalBody"></div>
+      <h3 id="mTitle" style="margin:0 0 6px"></h3>
+      <p id="mSummary" class="muted" style="margin:0 0 8px"></p>
+      <div id="mBody"></div>
       <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
         <button class="panel btn" id="closeModal">Close</button>
       </div>
     </div>
   </div>
 
-  <div class="orbit-wrap" aria-hidden="true">
-    <div class="orbit">
-      <div class="sat sat-email"><a class="panel" id="satEmail" href="#">Email</a></div>
-      <div class="sat sat-linked"><a class="panel" id="satLinked" href="#" target="_blank">LinkedIn</a></div>
-      <div class="sat sat-resume"><a class="panel" id="satResume" href="#" target="_blank">Resume</a></div>
-    </div>
-  </div>
-
-  <canvas id="scene"></canvas>
-
-<script type="module">
-  // Config
-  const SITE = {
-    name: 'Abishek V R',
-    email: 'abishekvr369@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/abishek-v-r-a45899239/',
-    resume: './resume.pdf'
-  };
-
+<script>
   const PROJECTS = [
-    { title: 'Adaptive Aero Wing', slug: 'adaptive-aero-wing', summary: 'Active aero wing for high-speed stability.', role: 'Mechanical + Controls', results: ['-12% Cd at 120 km/h','Closed-loop PID'], tech: ['CAD','CFD','STM32','CAN'] },
-    { title: 'EV Powertrain Bench', slug: 'ev-powertrain-bench', summary: 'Motor + inverter testbench with telemetry.', role: 'Integration', results: ['15% higher efficiency window','CAN logging'], tech: ['SiC Inverter','BMS','CANopen'] },
-    { title: 'Under construction 🚧', slug: 'tbd', summary: 'Placeholder for upcoming automotive project.', role: '—', results: [], tech: [] }
+    { title:'Adaptive Aero Wing', summary:'Active aero wing for high-speed stability.', role:'Mechanical + Controls', results:['-12% Cd at 120 km/h','Closed-loop PID'], tech:['CAD','CFD','STM32','CAN'] },
+    { title:'EV Powertrain Bench', summary:'Motor + inverter testbench with telemetry.', role:'Integration', results:['15% higher efficiency window','CAN logging'], tech:['SiC Inverter','BMS','CANopen'] },
+    { title:'Under construction 🚧', summary:'Placeholder for upcoming automotive project.', role:'—', results:[], tech:[] }
   ];
-
   const MILESTONES = [
-    { type:'education', title:'B.S. Mechanical Engineering', date:'2024', moons:['Vehicle Dynamics','Powertrain Systems','Capstone EV kart'] },
-    { type:'internship', title:'Automotive R&D Intern', date:'2023', moons:['Dyno testing','Aero protos','DAQ pipelines'] },
-    { type:'note', title:'More milestones — Under construction 🚧', date:'', moons:[] }
+    { title:'B.S. Mechanical Engineering (2024)' },
+    { title:'Automotive R&D Intern (2023)' },
+    { title:'More milestones — Under construction 🚧' }
   ];
 
-  name.textContent = SITE.name;
-  resumeBtn.href = SITE.resume;
-  emailBtn.href = `mailto:${SITE.email}`;
-  linkedinBtn.href = SITE.linkedin;
-  satResume.href = SITE.resume;
-  satEmail.href = `mailto:${SITE.email}`;
-  satLinked.href = SITE.linkedin;
-
-  const projectList = document.getElementById('projectList');
-  PROJECTS.forEach((p,i)=>{
-    const el = document.createElement('div');
-    el.className='panel'; el.style.padding='12px'; el.style.cursor='pointer';
-    el.innerHTML = `<div style="font-weight:600">${p.title}</div><div class="muted">${p.summary}</div>`;
-    el.onclick = ()=>openProject(i); projectList.appendChild(el);
-  });
-  const milestoneList = document.getElementById('milestoneList');
-  MILESTONES.forEach(m=>{ const el=document.createElement('div'); el.className='pill'; el.textContent=m.title; milestoneList.appendChild(el); });
-
+  // Modal
   const modal = document.getElementById('modal');
-  closeModal.onclick = ()=>modal.classList.remove('open');
-  function openProject(i){
-    const p = PROJECTS[i];
-    modalTitle.textContent = p.title;
-    modalSummary.textContent = p.summary;
-    modalBody.innerHTML =
+  const openProject = (i) => {
+    const p = PROJECTS[i] || { title:'Under construction 🚧', summary:'Coming soon.' };
+    mTitle.textContent = p.title;
+    mSummary.textContent = p.summary;
+    mBody.innerHTML =
       `<div style="margin:6px 0"><b>Role:</b> ${p.role||'—'}</div>` +
       (p.tech?.length? `<div style="margin:6px 0"><b>Tech:</b> ${p.tech.join(', ')}</div>`:'') +
       (p.results?.length? `<ul style="margin:6px 0 0 18px">${p.results.map(r=>`<li>${r}</li>`).join('')}</ul>`:'');
     modal.classList.add('open');
-  }
-
-  const listEl = document.getElementById('list');
-  let motionOn = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let audioOn = false;
-  motionBtn.onclick=()=>{ motionOn=!motionOn; motionBtn.textContent=`Motion: ${motionOn?'on':'off'}`; };
-  audioBtn.onclick=()=>{ audioOn=!audioOn; audioBtn.textContent=`Audio: ${audioOn?'on':'off'}`; };
-  listBtn.onclick=()=>{
-    const open = listEl.classList.toggle('open');
-    listBtn.textContent = open ? 'Universe view' : 'List view';
-    scene.style.display = open ? 'none' : 'block';
   };
+  document.getElementById('closeModal').onclick = ()=> modal.classList.remove('open');
 
-  let revAudio = null;
-  try{ revAudio = new Audio('./rev.mp3'); revAudio.volume=0.25; }catch(e){}
+  // Belt clicks
+  document.querySelectorAll('.asteroid').forEach(btn=>{
+    btn.addEventListener('click', ()=> openProject(Number(btn.dataset.i)||0));
+  });
 
-  import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-  import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+  // List view content
+  const listGrid = document.getElementById('listGrid');
+  PROJECTS.forEach((p,i)=>{
+    const card = document.createElement('div');
+    card.className='panel'; card.style.padding='12px'; card.style.cursor='pointer';
+    card.innerHTML = `<div style="font-weight:600">${p.title}</div><div class="muted">${p.summary}</div>`;
+    card.onclick = ()=> openProject(i);
+    listGrid.appendChild(card);
+  });
+  const ms = document.getElementById('milestones');
+  MILESTONES.forEach(m=>{ const el=document.createElement('div'); el.className='pill'; el.textContent=m.title; ms.appendChild(el); });
 
-  const canvas = document.getElementById('scene');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-  renderer.setClearColor(0x000000, 0);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-  const scene3 = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
-  camera.position.set(0, 2.3, 11);
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enablePan = false;
-
-  function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h,true); camera.aspect=w/h; camera.updateProjectionMatrix(); }
-  addEventListener('resize', resize);
-
-  scene3.add(new THREE.AmbientLight(0xffffff,.35));
-  const dir = new THREE.DirectionalLight(0xffffff,1.2); dir.position.set(3,5,2); scene3.add(dir);
-
-  const starGeo = new THREE.BufferGeometry(), count=1000, pos=new Float32Array(count*3);
-  for(let i=0;i<count;i++){ pos[i*3]=(Math.random()-0.5)*160; pos[i*3+1]=(Math.random()-0.5)*100; pos[i*3+2]=(Math.random()-0.5)*160; }
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
-  scene3.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0xffffff, size:.6, sizeAttenuation:true, transparent:true, opacity:.85 })));
-
-  const sun = new THREE.Mesh(new THREE.SphereGeometry(.35,32,32), new THREE.MeshBasicMaterial({ color:0xffd166 })); scene3.add(sun);
-  const satMat = new THREE.MeshStandardMaterial({ color:0xffffff, emissive:new THREE.Color('#39D0FF'), emissiveIntensity:.6 });
-  const satGeo = new THREE.SphereGeometry(.12,16,16);
-  const sats=[0,120,240].map(a=>({mesh:new THREE.Mesh(satGeo,satMat),angle:THREE.MathUtils.degToRad(a)})); sats.forEach(s=>scene3.add(s.mesh));
-
-  const asteroids=[], aGeo=new THREE.IcosahedronGeometry(1,0), radius=8, num=Math.max(36, PROJECTS.length);
-  for(let i=0;i<num;i++){
-    const m=new THREE.Mesh(aGeo,new THREE.MeshStandardMaterial({ roughness:.9, metalness:.1, color:0x263647 }));
-    const ang=(i/num)*Math.PI*2, r=radius+(Math.random()-0.5)*2.2;
-    m.position.set(Math.cos(ang)*r,(Math.random()-0.5)*0.8,Math.sin(ang)*r);
-    const s=.25+Math.random()*.35; m.scale.set(s,s,s);
-    m.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
-    m.userData.projectIndex=i%PROJECTS.length;
-    m.material.color.lerp(new THREE.Color('#39D0FF'), Math.random()*0.2);
-    scene3.add(m); asteroids.push(m);
-  }
-
-  const planets=[], pGeo=new THREE.SphereGeometry(.45,32,32);
-  MILESTONES.forEach((m,i)=>{ const ang=(i/Math.max(1,MILESTONES.length))*Math.PI*2; const x=Math.cos(ang)*5,z=Math.sin(ang)*5; const me=new THREE.Mesh(pGeo,new THREE.MeshStandardMaterial({ color:(i%2?'#39D0FF':'#F04438'), emissive:'#1b2a38', emissiveIntensity:.3 })); me.position.set(x,-1.25,z); scene3.add(me); planets.push(me); });
-
-  const comet = new THREE.Mesh(new THREE.SphereGeometry(.15,16,16), new THREE.MeshBasicMaterial({ color:'#39D0FF' }));
-  let cometActive=false, cometVel=new THREE.Vector3(), cometTimer=0;
-  const trailN=18, trail=[]; for(let i=0;i<trailN;i++){ const t=new THREE.Mesh(new THREE.SphereGeometry(.08*(1-i/trailN),8,8), new THREE.MeshBasicMaterial({ color:'#39D0FF', transparent:true, opacity:(1-i/trailN)*.6 })); t.visible=false; scene3.add(t); trail.push(t); }
-  function spawnComet(){ comet.position.set(-25, (Math.random()*8-4), 25); cometVel.set(Math.random()*.6+.4, Math.random()*.2-.1, -1).normalize().multiplyScalar(14); if(!scene3.children.includes(comet)) scene3.add(comet); cometActive=true; cometTimer=6; trail.forEach(t=>{ t.visible=true; t.position.copy(comet.position); }); }
-  setInterval(spawnComet, 70000); spawnComet();
-
-  const raycaster=new THREE.Raycaster(), mouse=new THREE.Vector2(); let hovered=null;
-  canvas.addEventListener('pointermove', (e)=>{ const rect=canvas.getBoundingClientRect(); mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1; });
-  canvas.addEventListener('pointerup', ()=>{ if(hovered && hovered.object?.userData?.projectIndex!=null) openProject(hovered.object.userData.projectIndex); });
-
-  function loop(){
-    if(!document.hidden){
-      asteroids.forEach(m=>{ if(motionOn){ m.rotation.x+=.0035; m.rotation.y+=.006; } });
-      planets.forEach((m,i)=>{ if(motionOn) m.rotation.y+=.002+i*.0005; });
-      sats.forEach(s=>{ s.angle+=.002; const r=2.6; s.mesh.position.set(Math.cos(s.angle)*r,.6,Math.sin(s.angle)*r); });
-      if(cometActive){ const dt=1/60; comet.position.addScaledVector(cometVel,dt); cometTimer-=dt; if(comet.position.length()>60||cometTimer<=0){ cometActive=false; scene3.remove(comet); trail.forEach(t=>t.visible=false); } else { for(let i=trail.length-1;i>0;i--) trail[i].position.copy(trail[i-1].position); trail[0].position.copy(comet.position); } }
-      raycaster.setFromCamera(mouse, camera); const hit=raycaster.intersectObjects(asteroids,false)[0];
-      if(hit!==hovered){ document.body.style.cursor = hit ? 'pointer' : 'auto'; if(hit && audioOn){ try{ const a=new Audio('./rev.mp3'); a.volume=.25; a.play(); }catch(e){} } if(hovered?.object) hovered.object.scale.multiplyScalar(1/1.12); hovered=hit||null; if(hovered?.object) hovered.object.scale.multiplyScalar(1.12); }
-      renderer.render(scene3, camera);
-    }
-    requestAnimationFrame(loop);
-  }
-
-  resize();
-  requestAnimationFrame(loop);
+  // Toggle list view
+  const listEl = document.getElementById('list');
+  document.getElementById('listBtn').onclick = ()=>{
+    const open = listEl.classList.toggle('open');
+    document.getElementById('listBtn').textContent = open ? 'Universe view' : 'List view';
+  };
 </script>
 </body>
 </html>
-```
